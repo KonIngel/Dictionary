@@ -1,8 +1,10 @@
 from __future__ import print_function
 import json
 import os
+import random
 from colorama import init
 from termcolor import colored
+from difflib import get_close_matches
 
 file = json.load(open("data.json"))
 file2 = json.load(open("dictionary.json"))
@@ -20,16 +22,23 @@ def append_data(what):
 
       with open('data.json', 'w') as json_file:
         json.dump(json_decoded, json_file)
-   else:
-       restart()
 
 
+def close_word():
+ if len(get_close_matches(x, file2.keys())) > 0 :
+   similar_list = get_close_matches(x,file2.keys())
+   a = random.choice(similar_list)
+   close = raw_input("\nDid you mean %s instead? Enter Y if yes, or N if no: " %(a) )
+   if close == 'y' or close == 'yes':
+        print(colored("\n"+ file2[a] , 'white' , "on_blue"))
+   elif close == 'n' or close == 'no':
+        what = raw_input(colored("\nDo you want to add the meaning of this word (Y,N) :",'grey','on_green')).lower()
+        append_data(what)
 
 def hello():
     clear()
     print(colored("============================",'white'))
-    print(colored('Wellcome to Dictionary V1.0 ^_^ \n','white'))
-    print(colored("Thank WebstersEnglishDictionary for data.json ^_^ \n",'white'))
+    print(colored('\nWellcome to Dictionary V1.0 ^_^ \n','white'))
     print(colored("============================",'white'))
 
 
@@ -44,7 +53,7 @@ def restart():
     if restart == 'y' :
         english_dict()
     else:
-        print(colored("Thanks for use it  :)",'white','on_green'))
+        print(colored("\nThanks for use it  :)",'grey','on_green'))
 
 
 def english_dict():
@@ -55,19 +64,24 @@ def english_dict():
         restart()
     except:
         try:
-            print(colored("\n"+str(file[x]) , 'white' , "on_blue"))
-            restart()
+            if type(file[x]) == list :
+                for word in file[x] :
+                    print(colored("\n"+ word , 'white' , "on_blue"))
+                    restart()
+            else:
+                    print(colored("\n"+str(file[x]) , 'white' , "on_blue"))
+                    restart()
         except:
            clear()
            print(colored("\nthis word ain't available :(",'white','on_red'))
-           what = raw_input(colored("\nDo you want to add the meaning of this word (Y,N) :",'grey','on_green')).lower()
-           append_data(what)
+           close_word()
            restart()
 
 init()
-clear()
+
 try:
+    clear()
     hello()
     english_dict()
 except KeyboardInterrupt:
-        print(colored("Thanks for use it  :)",'white','on_green'))
+        print(colored("\nThanks for use it  :)",'grey','on_green'))
