@@ -6,6 +6,10 @@ from colorama import init
 from termcolor import colored
 from difflib import get_close_matches
 
+__author__ = "KonINGEL"
+__copyright__ = "Copyright (C) 2018 Mostafa Kamal"
+__version__ = "1.0"
+
 file = json.load(open("data.json"))
 file2 = json.load(open("dictionary.json"))
 x = ''
@@ -39,6 +43,7 @@ def hello():
     clear()
     print(colored("============================",'white'))
     print(colored('\nWellcome to Dictionary V1.0 ^_^ \n','white'))
+    print(colored('\n Thank WebstersEnglishDictionary for  data.json by matthewreagan \n','white'))
     print(colored("============================",'white'))
 
 
